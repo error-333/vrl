@@ -1,0 +1,36 @@
+module sr(
+ input wire s,       
+ input wire r,       
+ input wire clk,     
+ input wire rst,     
+ output reg q,       
+ output wire qn      
+);
+ assign qn = ~q;
+
+ always @(posedge clk or posedge rst) begin
+   if (rst) begin
+     q <= 0;                     
+   end else if (s && !r) begin
+     q <= 1;
+   end else if (!s && r) begin
+     q <= 0;                     
+   end
+   
+ end
+endmodule
+
+
+
+always #5 clk = ~clk;   
+initial begin
+ clk = 0; rst = 0; s = 0; r = 0;
+ #10 rst = 1;    
+ #10 rst = 0;    
+
+ #10 s = 0; r = 1; 
+ #10 s = 1; r = 0; 
+ #10 s = 1; r = 1; 
+ #10; $finish;     
+end
+endmodule
