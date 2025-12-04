@@ -1,0 +1,50 @@
+module flipd (output reg q,
+ input d,
+ input rst_n,
+ input clk
+ );
+ always @(posedge clk or negedge rst_n)
+ begin
+ if (!rst_n)
+ begin
+ q <= 0;
+ end
+ else
+ begin
+ q <= d;
+ end
+ end
+endmodule
+
+
+
+module flipt_tb;
+reg d;
+reg rst_n;
+reg clk;
+wire q;
+
+flipd uut (
+ .q(q),
+ .d(d),
+ .rst_n(rst_n),
+ .clk(clk)
+);
+
+always #5 clk = ~clk;
+
+initial begin
+ clk = 0;
+ rst_n = 0;
+ d = 0;
+ #15;
+ rst_n = 1;
+ #15;
+ d = 1;
+ #15;
+ d = 0;
+ #15;
+
+ $finish;
+ end
+endmodule
