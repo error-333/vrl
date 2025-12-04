@@ -1,0 +1,35 @@
+module jk( q, qb, j, k, clk);
+input j, k, clk;
+output q, qb;
+reg q;
+
+initial
+q=0;
+
+always @ (posedge clk)
+assign q = ( ~ q & j ) | ( ~ k & q );
+assign qb = ~ q;
+
+endmodule
+
+
+module jk_tb;
+reg j,k,clk;
+wire q,qb;
+
+jk uut (.q(q), .qb(qb),.j(j),.k(k),.clk(clk));
+
+initial begin
+j=0;
+k=0;
+clk=0;
+#100;
+j=0;k=1;#50;
+j=1;k=0;#50;
+j=1;k=1;#50;
+$finish;
+end
+
+always #50 clk = ~clk;
+
+endmodule
